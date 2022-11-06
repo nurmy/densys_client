@@ -1,0 +1,15 @@
+.layout-wrapper {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+}
+
+.sidebar-wrapper {
+    flex-basis: 0;
+    flex-grow: 1;
+}
+
+.outlet-wrapper {
+    flex-basis: 0;
+    flex-grow: 7;
+}
