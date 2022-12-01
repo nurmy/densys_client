@@ -34,7 +34,7 @@ const LoginPage = () => {
             btnRef.current.disabled = false
         }
         if (state.authenticated) {
-            navigate('/admin')
+            navigate(`/${state.role}`)
         }
     }, [state])
 

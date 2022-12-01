@@ -3,10 +3,10 @@ import Sidebar from '../Sidebar/Sidebar'
 import { NavLink, Outlet } from 'react-router-dom'
 import './SidebarLayout.css'
 
-const SidebarLayout = ({ children }) => {
+const SidebarLayout = ({ role }) => {
     return (
         <div className="layout-wrapper">
-            <Sidebar className="sidebar-wrapper" />
+            <Sidebar className="sidebar-wrapper" role={role} />
             <Outlet className="outlet-wrapper" />
         </div>
     )

@@ -1,12 +1,12 @@
 import { Navbar, Group, Code, ScrollArea, createStyles } from '@mantine/core'
 import { IconGauge, IconTable } from '@tabler/icons'
 import { Link, useNavigate } from 'react-router-dom'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { logout } from './../../features/authSlice'
 
-const Sidebar = () => {
-    const [active, setActive] = useState('dashboard')
+const Sidebar = ({ role }) => {
+    const [active, setActive] = useState(null)
     const user_info = useSelector((state) => {
         return { username: state.auth.username, role: state.auth.role }
     })
@@ -16,6 +16,51 @@ const Sidebar = () => {
         dispatch(logout())
         navigate('/login')
     }
+
+    let tabs = []
+
+    if (role === 'admin') {
+        tabs = [
+            {
+                label: 'dashboard',
+                name: 'Dashboard',
+                to: '/admin',
+            },
+            {
+                label: 'doctors',
+                name: 'Doctors',
+                to: '/admin/doctors',
+            },
+            {
+                label: 'patients',
+                name: 'Patients',
+                to: '/admin/patients',
+            },
+            {
+                label: 'requests',
+                name: 'New requests',
+                to: '/admin/requests',
+            },
+        ]
+    } else if (role === 'patient') {
+        tabs = [
+            {
+                label: 'profile',
+                name: 'Personal page',
+                to: '/patient',
+            },
+            {
+                label: 'book',
+                name: 'Book appointment',
+                to: '/patient/book',
+            },
+        ]
+    }
+
+    useEffect(() => {
+        setActive(tabs[0].label)
+    }, [])
+
     return (
         <div
             className="d-flex flex-column flex-shrink-0 p-3 bg-light"
@@ -29,58 +74,28 @@ const Sidebar = () => {
             </Link>
             <hr />
             <ul className="nav nav-pills flex-column mb-auto">
-                <li
-                    className="nav-item"
-                    onClick={() => {
-                        setActive('dashboard')
-                    }}
-                >
-                    <Link
-                        to="/admin"
-                        className={
-                            active === 'dashboard'
-                                ? 'nav-link active'
-                                : 'nav-link link-dark'
-                        }
-                        aria-current="page"
-                    >
-                        Dashboard
-                    </Link>
-                </li>
-                <li
-                    className="nav-item"
-                    onClick={() => {
-                        setActive('doctors')
-                    }}
-                >
-                    <Link
-                        to="/admin/doctors"
-                        className={
-                            active === 'doctors'
-                                ? 'nav-link active'
-                                : 'nav-link link-dark'
-                        }
-                    >
-                        Doctors
-                    </Link>
-                </li>
-                <li
-                    className="nav-item"
-                    onClick={() => {
-                        setActive('patients')
-                    }}
-                >
-                    <Link
-                        to="/admin/patients"
-                        className={
-                            active === 'patients'
-                                ? 'nav-link active'
-                                : 'nav-link link-dark'
-                        }
-                    >
-                        Patients
-                    </Link>
-                </li>
+                {tabs &&
+                    tabs.map((tab) => (
+                        <li
+                            className="nav-item"
+                            onClick={() => {
+                                setActive(tab.label)
+                            }}
+                            key={tab.label}
+                        >
+                            <Link
+                                to={tab.to}
+                                className={
+                                    active === tab.label
+                                        ? 'nav-link active'
+                                        : 'nav-link link-dark'
+                                }
+                                aria-current="page"
+                            >
+                                {tab.name}
+                            </Link>
+                        </li>
+                    ))}
             </ul>
             <hr />
             <div className="dropdown">

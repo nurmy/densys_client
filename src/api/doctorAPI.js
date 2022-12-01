@@ -24,6 +24,62 @@ export const fetchAllDoctors = async (token) => {
     }
 }
 
+export const countDoctors = async (token, attributes) => {
+    try {
+        // console.log(token)
+        const res = await axios.get(
+            attributes.search
+                ? `http://localhost:8080/doctors/${attributes.spec_id}/count?search=${attributes.search}`
+                : `http://localhost:8080/doctors/${attributes.spec_id}/count`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        // console.log(res)
+        if (res.message) {
+            return {
+                error: res.message,
+            }
+        }
+        const data = res.data
+        return data
+    } catch (err) {
+        return {
+            error: 'Failed to authenticate',
+        }
+    }
+}
+
+export const fetchSpecDoctors = async (token, attributes) => {
+    try {
+        // console.log(token)
+        const res = await axios.get(
+            attributes.search
+                ? `http://localhost:8080/doctors/${attributes.spec_id}?page=${attributes.page}&limit=${attributes.limit}&search=${attributes.search}`
+                : `http://localhost:8080/doctors/${attributes.spec_id}?page=${attributes.page}&limit=${attributes.limit}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        )
+        // console.log(res)
+        if (res.message) {
+            return {
+                error: res.message,
+            }
+        }
+        const data = res.data
+        return data
+    } catch (err) {
+        return {
+            error: 'Failed to authenticate',
+        }
+    }
+}
+
 export const registerDoctor = async (token, attributes) => {
     try {
         // console.log(token)
